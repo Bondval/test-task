@@ -1,0 +1,124 @@
+<div class="form-wrapper">
+
+  <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSave()">
+
+    <h3 class="mb-4">Book Info</h3>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" id="author" class="form-control" formControlName="author"
+             [ngClass]="{ 'is-invalid': submitted && form.controls['author'].errors }">
+      <div *ngIf="submitted && form.controls['author'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['author'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['author'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['author'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" class="form-control" formControlName="title"
+             [ngClass]="{ 'is-invalid': submitted && form.controls['title'].errors }">
+      <div *ngIf="submitted && form.controls['title'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['title'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['title'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['title'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input type="text" id="isbn" class="form-control" formControlName="isbn"
+             [ngClass]="{ 'is-invalid': submitted && form.controls['isbn'].errors }">
+      <div *ngIf="submitted && form.controls['isbn'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['isbn'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['isbn'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['isbn'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="pages">Number of pages</label>
+      <input type="number" id="pages" class="form-control" formControlName="pages"
+             [ngClass]="{ 'is-invalid': submitted && form.controls['pages'].errors }">
+      <div *ngIf="submitted && form.controls['pages'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['pages'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['pages'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['pages'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="format">Format</label>
+      <select class="form-control" id="format" formControlName="format"
+              [ngClass]="{ 'is-invalid': submitted && form.controls['format'].errors }">
+        <option *ngFor="let format of dataService.formats" [ngValue]="format">{{ format.name }}</option>
+      </select>
+      <div *ngIf="submitted && form.controls['format'].errors" class="invalid-feedback">
+        <div *ngIf="form.value.format.errors.required">Field is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="description" formControlName="description" rows="3"
+                [ngClass]="{ 'is-invalid': submitted && form.controls['description'].errors }"></textarea>
+      <div *ngIf="submitted && form.controls['description'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['description'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['description'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['description'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price, $</label>
+      <input type="number" id="price" class="form-control" formControlName="price"
+             [ngClass]="{ 'is-invalid': submitted && form.controls['price'].errors }">
+      <div *ngIf="submitted && form.controls['price'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['price'].errors.required">Field is required</div>
+        <div *ngIf="form.controls['price'].errors.pattern">Field must be a valid</div>
+        <div *ngIf="form.controls['price'].errors.minlength">Field must be at least 3 characters</div>
+      </div>
+    </div>
+
+    <hr class="m-1 mb-5 mt-5">
+
+    <h3 class="mb-4">Publisher Info</h3>
+
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select class="form-control" id="country" formControlName="country" [(ngModel)]="selectedCountry"
+              [ngClass]="{ 'is-invalid': submitted && form.controls['country'].errors }">
+      <option *ngFor="let country of dataService.countries" [ngValue]="country">{{ country.name }}</option>
+      </select>
+      <div *ngIf="submitted && form.controls['country'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['country'].errors.required">Field is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="city">City</label>
+      <select class="form-control" id="city" formControlName="city" [(ngModel)]="selectedCity"
+              [ngClass]="{ 'is-invalid': submitted && form.controls['city'].errors }">
+        <option *ngFor="let city of onCountryChanged(selectedCountry)" [ngValue]="city">{{ city.name }}</option>
+      </select>
+      <div *ngIf="submitted && form.controls['city'].errors" class="invalid-feedback">
+        <div *ngIf="form.controls['city'].errors.required">Field is required</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="company">Company</label>
+      <select class="form-control" id="company" formControlName="company"
+              [ngClass]="{ 'is-invalid': submitted && form.controls['company'].errors }">
+        <option *ngFor="let company of onCityChanged(selectedCity)" [ngValue]="company"> {{ company.name }}</option>
+      </select>
+      <div *ngIf="submitted && form.controls['company'].errors" class="invalid-feedback">
+         <div *ngIf="form.controls['company'].errors.required">Field is required</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+
+  </form>
+
+</div>

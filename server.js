@@ -14,6 +14,7 @@ server.use((req, res, next) => {
     res.sendStatus(401);
   }
 });
+
 server.use(router);
 server.listen(3004);
 
